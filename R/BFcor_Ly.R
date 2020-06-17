@@ -84,5 +84,5 @@ cor_posterior <- function(Rho, N, R, alpha_prior, beta_prior){
 cor_BF10 <- function(N, R, alpha_prior, beta_prior){
   L0 <- Re(L_red(N, R, Rho=0, Gamma=0, Delta=0))
   L1 <- cor_ML(N, R, alpha_prior, beta_prior)
-  L1/L0
+  suppressWarnings(L1/L0)
 }

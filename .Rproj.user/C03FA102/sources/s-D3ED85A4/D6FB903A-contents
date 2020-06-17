@@ -1,0 +1,7 @@
+a <- Sys.time()
+cor_BF10(100, 0.5, 5.32, 18.58)
+Sys.time()-a
+
+b <- Sys.time()
+integrate(fH1, sampleN = 100, pearson_r = 0.5, lower = 0, upper = 1)$value/dPearson(0.5, 100, rho=0)
+Sys.time()-b
