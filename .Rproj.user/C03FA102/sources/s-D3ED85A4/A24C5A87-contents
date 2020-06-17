@@ -1,0 +1,30 @@
+# ==============================================================================
+# CODE TO REPRODUCE ALL ANALYSES IN THE MANUSCRIPT
+# ==============================================================================
+
+##### STEP 1: Read in and clean data ####
+
+# The Bosco et al. dataset needs to be downloaded from the website because
+# re-sharing it is not allowed.
+
+# Download Bosco et al. dataset from
+# http://www.frankbosco.com/data/CorrelationalEffectSizeBenchmarks.html
+# and save it in this folder
+
+# Set working directory to the "ExpertAgreementCode" folder
+
+# Run the script ExpertAgreementCode/data-raw/LoadAllData.R
+source("data-raw/LoadAllData.R") # this may take 3-5 minutes
+
+##### STEP 2: Data analysis ####
+
+# Load all functions from the package
+devtools::load_all()
+
+# Compute Bayes factors for Wetzels data
+BFWetzels <- computeBFWetzels_complete(WetzelsEtAl, ExpertsPriors_tTest) # this may take 2-3 minutes
+
+# Compute Bayes factors for Bosco et al data
+
+
+

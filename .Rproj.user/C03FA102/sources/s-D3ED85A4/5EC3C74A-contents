@@ -1,0 +1,74 @@
+seed <- 1234
+studysample <- sample(unique(BoscoEtAl$studyID), 855, replace = F)
+ids <- NULL
+for(i in studysample){
+  dat <- BoscoEtAl[BoscoEtAl$studyID == i,]
+  ids[which(studysample==i)] <- dat$RowID[sample(length(dat$RowID), 1)]
+}
+BoscoEtAlRed <- BoscoEtAl[BoscoEtAl$RowID %in% ids,]
+
+N <- BoscoEtAlRed$N[35]
+R <- BoscoEtAlRed$r[35]
+Gamma <- 0
+Delta <- 0
+alpha_prior <- as.numeric(ExpertsPriors_cor$beta_a[1])
+beta_prior <- as.numeric(ExpertsPriors_cor$beta_b[1])
+Rho <- 0.83
+
+## Try different things
+
+for(i in 1:855){
+  print(i)
+  BFBosco(BoscoEtAlRed[i, ], ExpertsPriors_cor[1,])
+}
+
+tryRho <- seq(0, 1, by = 0.01)
+bla <- rep(NA, length(tryRho))
+for(i in seq_along(tryRho)){
+  bla[i] <- cor_posterior_US(tryRho[i], N, R, alpha_prior, beta_prior)
+}
+
+integrate(function(x) cor_posterior_US(x, N, R, alpha_prior, beta_prior),
+          lower = 0, upper = 1, rel.tol = 1e-20)$value
+
+cor_BF10(N, R, 1, 1)
+cor_BF10(N, R, alpha_prior, beta_prior)
+
+##### Relationship between hypergeometric function terms #
+
+R <- -0.7
+Rho <- 0.83
+N <- 300
+
+A <- (N-Gamma-1)/2
+B <- (N-Delta-1)/2
+Z <- R^2*Rho^2
+HyperA <- hypergeo::hypergeo(A, B, 0.5, Z, tol = .Machine$double.eps^0.25)
+A2 <- (N-Gamma)/2
+B2 <- (N-Delta)/2
+HyperB <- hypergeo::hypergeo(A2, B2, 1.5, Z, tol = .Machine$double.eps^0.25)
+
+blaA <- rep(NA, 1000)
+for(i in 1:1000){
+  blaA[i] <- hypergeo((i-Gamma-1)/2, (i-Delta-1)/2, 0.5, Z, tol = .Machine$double.eps^0.25)
+}
+
+blaB <- rep(NA, 1000)
+for(i in 1:1000){
+  blaB[i] <- hypergeo((i-Gamma)/2, (i-Delta)/2, 1.5, Z, tol = .Machine$double.eps^0.25)
+}
+
+plot(c(1:1000),blaA/blaB)
+
+point200 <- hypergeo((200-Gamma-1)/2, (200-Delta-1)/2, 0.5, Z)/hypergeo((200-Gamma)/2, (200-Delta)/2, 1.5, Z)
+point100 <- hypergeo((100-Gamma-1)/2, (100-Delta-1)/2, 0.5, Z)/hypergeo((100-Gamma)/2, (100-Delta)/2, 1.5, Z)
+slope <- (point200-point100)/100
+intrc <- point100-100*slope
+abline(a=intrc, b=slope, col = "red")
+
+# Find Hyper A from Hyper B at N
+HyperA/HyperB
+N*slope+intrc #these are approximately equivalent
+
+HyperB*(N*slope+intrc)
+HyperA # these two are approximately equivalent
