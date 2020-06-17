@@ -3,7 +3,7 @@
     "path": "~/Documents/Projects/Prior Elicitation/Dimitris Project/ExpertAgreementCode/R/plot_priors.R",
     "project_path": "R/plot_priors.R",
     "type": "r_source",
-    "hash": "3155351300",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1592378618085.0,
@@ -11,15 +11,15 @@
     "relative_order": 4,
     "properties": {
         "tempName": "Untitled2",
-        "cursorPosition": "53,0",
-        "scrollLine": "29"
+        "cursorPosition": "42,19",
+        "scrollLine": "40"
     },
     "folds": "",
-    "lastKnownWriteTime": 1592409898,
+    "lastKnownWriteTime": 1592410463,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1592409898406,
+    "last_content_update": 1592410463246,
     "read_only": false,
     "read_only_alternatives": []
 }
