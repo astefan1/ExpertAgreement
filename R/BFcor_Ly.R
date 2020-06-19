@@ -1,6 +1,7 @@
 #### Code for correlation Bayes factors and posteriors with informed priors ####
-
 # Based on Ly, Maarsman & Wagenmakers (2018). doi:10.1111/stan.12111
+# Allows to set Gamma and Delta parameters freely (they are fixed to zero in
+# the regular functions)
 
 # Reduced likelihood
 
@@ -46,15 +47,15 @@ L_red <- function(N, R, Rho, Gamma, Delta){
 
 # Unstandardized posterior
 
-cor_posterior_US <- function(Rho, N, R, alpha_prior, beta_prior){
-  res <- log(L_red(N, R, Rho, Gamma = 0, Delta = 0)) + stats::dbeta(Rho, alpha_prior, beta_prior, log=TRUE)
+cor_posterior_US_Ly <- function(Rho, N, R, alpha_prior, beta_prior, Gamma, Delta){
+  res <- log(L_red(N, R, Rho, Gamma = Gamma, Delta = Delta)) + stats::dbeta(Rho, alpha_prior, beta_prior, log=TRUE)
   return(exp(Re(res)))
 }
 
 # Marginal likelihood
 
-cor_ML <- function(N, R, alpha_prior, beta_prior){
-  stats::integrate(function(x) cor_posterior_US(x, N, R, alpha_prior, beta_prior),
+cor_ML_Ly <- function(N, R, alpha_prior, beta_prior, Gamma, Delta){
+  stats::integrate(function(x) cor_posterior_US_Ly(x, N, R, alpha_prior, beta_prior, Gamma, Delta),
             lower = 0, upper = 1, subdivisions = 10000, abs.tol = 1e-3, stop.on.error = F)$value
 
 }
@@ -67,9 +68,9 @@ cor_ML <- function(N, R, alpha_prior, beta_prior){
 #' @param beta_prior Beta parameter in the beta prior on r
 #' @export
 
-cor_posterior <- function(Rho, N, R, alpha_prior, beta_prior){
-  enum <- cor_posterior_US(Rho, N, R, alpha_prior, beta_prior)
-  denom <- cor_ML(N, R, alpha_prior, beta_prior)
+cor_posterior_Ly <- function(Rho, N, R, alpha_prior, beta_prior, Gamma, Delta){
+  enum <- cor_posterior_US_Ly(Rho, N, R, alpha_prior, beta_prior, Gamma, Delta)
+  denom <- cor_ML_Ly(N, R, alpha_prior, beta_prior, Gamma, Delta)
   enum/denom
 }
 
@@ -81,8 +82,8 @@ cor_posterior <- function(Rho, N, R, alpha_prior, beta_prior){
 #' @importFrom stats integrate dbeta
 #' @export
 
-cor_BF10 <- function(N, R, alpha_prior, beta_prior){
-  L0 <- Re(L_red(N, R, Rho=0, Gamma=0, Delta=0))
-  L1 <- cor_ML(N, R, alpha_prior, beta_prior)
+cor_BF10_Ly <- function(N, R, alpha_prior, beta_prior, Gamma=0, Delta=0){
+  L0 <- Re(L_red(N, R, Rho=0, Gamma=Gamma, Delta=Delta))
+  L1 <- cor_ML_Ly(N, R, alpha_prior, beta_prior, Gamma, Delta)
   suppressWarnings(L1/L0)
 }
