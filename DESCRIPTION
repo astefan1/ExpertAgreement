@@ -16,6 +16,7 @@ Imports:
     BFDA,
     logOfGamma,
     ggsci,
-    grDevices
+    grDevices,
+    SuppDists
 Suggests: 
     readxl

@@ -66,6 +66,8 @@ cor_ML_Ly <- function(N, R, alpha_prior, beta_prior, Gamma, Delta){
 #' @param R Pearson correlation coefficient in the sample
 #' @param alpha_prior Alpha parameter in the beta prior on r
 #' @param beta_prior Beta parameter in the beta prior on r
+#' @param Gamma Gamma parameter (see Ly et al. 2018)
+#' @param Delta Delta parameter (see Ly et al. 2018)
 #' @export
 
 cor_posterior_Ly <- function(Rho, N, R, alpha_prior, beta_prior, Gamma, Delta){
@@ -79,6 +81,8 @@ cor_posterior_Ly <- function(Rho, N, R, alpha_prior, beta_prior, Gamma, Delta){
 #' @param R Pearson correlation coefficient in the sample
 #' @param alpha_prior Alpha parameter in the beta prior on r
 #' @param beta_prior Beta parameter in the beta prior on r
+#' @param Gamma Gamma parameter (see Ly et al. 2018)
+#' @param Delta Delta parameter (see Ly et al. 2018)
 #' @importFrom stats integrate dbeta
 #' @export
 

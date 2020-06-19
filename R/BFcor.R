@@ -1,5 +1,6 @@
 #### Code for correlation Bayes factors and posteriors with informed priors ####
 
+#'@import SuppDists
 # Unstandardized posterior distribution
 cor_posterior_US <- function(rho, N, R, alpha_prior, beta_prior){
   SuppDists::dPearson(R, N, rho=rho)*stats::dbeta(rho,alpha_prior, beta_prior)
@@ -15,7 +16,7 @@ cor_ML <- function(N, R, alpha_prior, beta_prior){
 
 # Posterior distribution
 cor_posterior <- function(rho, N, R, alpha_prior, beta_prior){
-  enum <- cor_posterior_US(Rho, N, R, alpha_prior, beta_prior)
+  enum <- cor_posterior_US(rho, N, R, alpha_prior, beta_prior)
   denom <- cor_ML(N, R, alpha_prior, beta_prior)
   enum/denom
 }
