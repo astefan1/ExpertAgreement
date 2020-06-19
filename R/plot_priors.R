@@ -7,6 +7,10 @@
 #' @import graphics
 
 plotpriors_t <- function(ExpertsPriors_tTest, ylim){
+
+  grDevices::pdf(file = "../Figures/plot_priors_tTest.pdf",
+                 width = 8, height=9)
+
   cols <- ggsci::pal_aaas("default")(9)
   expert_name <- c("Social 1", "Social 2", "Neuro 1", "Neuro 2",
                    "Developmental 1", "Developmental 2")
@@ -28,11 +32,13 @@ plotpriors_t <- function(ExpertsPriors_tTest, ylim){
     graphics::mtext(expert_name[i], cex=1.2)
   }
 
-  graphics::legend(x = -0.7, y = -2.5,
+  graphics::legend(x = -0.9, y = -2.5,
          legend = c("t-distribution ", "normal distribution"),
          lty = c("solid", "solid"), bty = "n", horiz = TRUE, lwd=c(2,2),
          xpd = NA, col = cols[c(4,3)], adj = 0,
-         text.width = c(0.30, 0.30), cex=1.5)
+         text.width = c(0.40, 0.40), cex=1.5)
+
+  grDevices::dev.off()
 
 }
 
@@ -43,6 +49,10 @@ plotpriors_t <- function(ExpertsPriors_tTest, ylim){
 #' @import graphics
 
 plotpriors_cor <- function(ExpertsPriors_cor, ylim){
+
+  grDevices::pdf(file = "../Figures/plot_priors_cor.pdf",
+                 width = 8, height=9)
+
   cols <- ggsci::pal_aaas("default")(9)
   expert_name <- c("Social 1", "Social 2", "Neuro 1", "Neuro 2",
                    "Developmental 1", "Developmental 2")
@@ -59,6 +69,8 @@ plotpriors_cor <- function(ExpertsPriors_cor, ylim){
            col=cols[1], lty="solid")
     graphics::mtext(expert_name[i], cex=1.2)
   }
+
+  grDevices::dev.off()
 
 }
 
