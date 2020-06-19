@@ -1,0 +1,11 @@
+.Rproj.user
+.Rproj
+.Rhistory
+.RData
+.Rapp*
+.DS*
+.Rapp.history
+.rda
+
+*.RData
+
