@@ -15,6 +15,7 @@ Imports:
     hypergeo,
     BFDA,
     logOfGamma,
-    ggsci
+    ggsci,
+    grDevices
 Suggests: 
     readxl
