@@ -62,6 +62,8 @@ cdf_t <- function(x,
                   prior.df,
                   rel.tol = .Machine$double.eps^0.25) {
 
+  if(x==-Inf) return(0)
+
   out <- integrate(posterior_t,
                    lower = -Inf, upper = x,
                    t = t, n1 = n1, n2 = n2,
@@ -81,6 +83,31 @@ cdf_t <- function(x,
   }
 
   return(out)
+
+}
+
+posterior_t_trunc <- function(delta,
+                              a=-Inf,
+                              b=Inf,
+                              t,
+                              n1,
+                              n2 = NULL,
+                              independentSamples = FALSE,
+                              prior.location,
+                              prior.scale,
+                              prior.df,
+                              rel.tol = .Machine$double.eps^0.25){
+
+  post <- posterior_t(delta, t, n1, n2, independentSamples, prior.location,
+                      prior.scale, prior.df)
+
+  lower <- cdf_t(a, t, n1, n2 = n2, independentSamples,
+                 prior.location, prior.scale, prior.df, rel.tol=rel.tol)
+
+  upper <- cdf_t(b, t, n1, n2 = n2, independentSamples,
+                   prior.location, prior.scale, prior.df, rel.tol=rel.tol)
+
+  post/(upper-lower)
 
 }
 
@@ -231,6 +258,8 @@ cdf_normal <- function(x,
                        prior.variance,
                        rel.tol = .Machine$double.eps^0.25) {
 
+  if(x==-Inf) return(0)
+
   out <- integrate(posterior_normal, lower = -Inf, upper = x,
                    t = t, n1 = n1, n2 = n2,
                    independentSamples = independentSamples,
@@ -249,6 +278,29 @@ cdf_normal <- function(x,
 
   return(out)
 
+}
+
+posterior_normal_trunc <- function(delta,
+                                   a,
+                                   b,
+                                   t,
+                                   n1,
+                                   n2 = NULL,
+                                   independentSamples = FALSE,
+                                   prior.mean,
+                                   prior.variance,
+                                   rel.tol = .Machine$double.eps^0.25) {
+
+  post <- posterior_normal(delta, t, n1, n2, independentSamples,
+                      prior.mean, prior.variance)
+
+  lower <- cdf_normal(a, t, n1, n2 = n2, independentSamples,
+                 prior.mean, prior.variance, rel.tol=rel.tol)
+
+  upper <- cdf_normal(b, t, n1, n2 = n2, independentSamples,
+                   prior.mean, prior.variance, rel.tol=rel.tol)
+
+  post/(upper-lower)
 }
 
 quantile_normal <- function(q,

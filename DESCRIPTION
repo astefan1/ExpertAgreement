@@ -19,4 +19,5 @@ Imports:
     grDevices,
     SuppDists
 Suggests: 
-    readxl
+    readxl,
+    testthat
