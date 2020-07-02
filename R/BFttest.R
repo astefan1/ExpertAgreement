@@ -64,23 +64,18 @@ cdf_t <- function(x,
 
   if(x==-Inf) return(0)
 
-  out <- integrate(posterior_t,
+  out <- tryCatch(integrate(posterior_t,
                    lower = -Inf, upper = x,
                    t = t, n1 = n1, n2 = n2,
                    independentSamples = independentSamples,
                    prior.location = prior.location,
                    prior.scale = prior.scale,
                    prior.df = prior.df,
-                   rel.tol = rel.tol)$value
+                   rel.tol = rel.tol)$value, error=function(e) NA)
 
-  # catch numerical errors
-  if (out > 1 & out < 1.001) {
-    out <- 1
-    warning(
-      "Numerical integration yields a CDF value slightly larger than 1. The CDF value has been replaced by 1.",
-      call. = FALSE
-    )
-  }
+  # Catch numeric errors
+  if(is.na(out)) return(NA)
+  out[out > 1 & out < 1.001] <- 1
 
   return(out)
 
@@ -107,7 +102,13 @@ posterior_t_trunc <- function(delta,
   upper <- cdf_t(b, t, n1, n2 = n2, independentSamples,
                    prior.location, prior.scale, prior.df, rel.tol=rel.tol)
 
-  post/(upper-lower)
+  if(upper-lower==0 | any(is.na(c(lower, upper)))) return(NA)
+
+  res <- post/(upper-lower)
+
+  res[res==0] <- 1e-298
+
+  res
 
 }
 
@@ -260,21 +261,16 @@ cdf_normal <- function(x,
 
   if(x==-Inf) return(0)
 
-  out <- integrate(posterior_normal, lower = -Inf, upper = x,
+  out <- tryCatch(integrate(posterior_normal, lower = -Inf, upper = x,
                    t = t, n1 = n1, n2 = n2,
                    independentSamples = independentSamples,
                    prior.mean = prior.mean,
                    prior.variance = prior.variance,
-                   rel.tol = rel.tol)$value
+                   rel.tol = rel.tol)$value, error=function(e) NA)
 
-  # catch numerical errors
-  if (out > 1 & out < 1.001) {
-    out <- 1
-    warning(
-      "Numerical integration yields a CDF value slightly larger than 1. The CDF value has been replaced by 1.",
-      call. = FALSE
-    )
-  }
+  # Catch errors
+  if(is.na(out)) return(NA)
+  out[out > 1 & out < 1.001] <- 1
 
   return(out)
 
@@ -300,7 +296,13 @@ posterior_normal_trunc <- function(delta,
   upper <- cdf_normal(b, t, n1, n2 = n2, independentSamples,
                    prior.mean, prior.variance, rel.tol=rel.tol)
 
-  post/(upper-lower)
+  if(upper-lower==0 | any(is.na(c(lower, upper)))) return(NA)
+
+  res <- post/(upper-lower)
+
+  res[res==0] <- 1e-298
+
+  res
 }
 
 quantile_normal <- function(q,

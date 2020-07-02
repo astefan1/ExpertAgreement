@@ -103,12 +103,10 @@ plotKLWetzels <- function(KLWetzels,
                           xtck=NULL){
 
   # PDF settings
-  path <- paste0("../Figures/plot_BFWetzels", "_", elicit.stage, "_", disttype, "_", BFdir, ".pdf")
+  path <- paste0("../Figures/plot_BFWetzels", "_", elicit.stage, "_", disttype, ".pdf")
   grDevices::pdf(file = path, width = pdf.width, height=pdf.height)
 
   # Select the columns for plotting
-  alternative <- switch(alternative,
-                        "two.sided"="BF10", "greater"="BFplus0", "less"="BFmin0")
   BFselect <- paste0("BF_", elicit.stage, "_", disttype, "_", alternative)
   BFelicited <- grep(BFselect, colnames(BFWetzels))
   BFdefault <- grep(paste0(alternative, "_default"), colnames(BFWetzels))
