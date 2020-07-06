@@ -10,7 +10,7 @@ KLWetzels <- function(dat, prior, direction, stage){
     KLMATCHt <- KLdiv_tTest_t(t=dat[3], n1=dat[1], n2=dat[2], independentSamples=as.logical(dat[6]),
                               prior.location=prior[25], prior.scale=prior[26], prior.df=prior[27], direction=direction)
     KLMATCHnorm <- KLdiv_tTest_norm(t=dat[3], n1=dat[1], n2=dat[2], independentSamples=as.logical(dat[6]),
-                                    prior.mean=prior[23], prior.variance=prior[24], direction=direction)
+                                    prior.mean=prior[23], prior.variance=prior[24]^2, direction=direction)
     res <- c(KLMATCHt, KLMATCHnorm)
     names(res) <- c("KL_MATCH_t", "KL_MATCH_norm")
 
@@ -18,7 +18,7 @@ KLWetzels <- function(dat, prior, direction, stage){
     KLShinyt <- KLdiv_tTest_t(t=dat[3], n1=dat[1], n2=dat[2], independentSamples=as.logical(dat[6]),
                               prior.location=prior[31], prior.scale=prior[32], prior.df=prior[33], direction=direction)
     KLShinynorm <- KLdiv_tTest_norm(t=dat[3], n1=dat[1], n2=dat[2], independentSamples=as.logical(dat[6]),
-                                    prior.mean=prior[29], prior.variance=prior[30], direction=direction)
+                                    prior.mean=prior[29], prior.variance=prior[30]^2, direction=direction)
     res <- c(KLShinyt, KLShinynorm)
     names(res) <- c("KL_Shiny_t", "KL_Shiny_norm")
   }

@@ -103,58 +103,50 @@ plotKLWetzels <- function(KLWetzels,
                           xtck=NULL){
 
   # PDF settings
-  path <- paste0("../Figures/plot_BFWetzels", "_", elicit.stage, "_", disttype, ".pdf")
+  path <- paste0("../Figures/plot_KLWetzels", "_", elicit.stage, "_", disttype, ".pdf")
   grDevices::pdf(file = path, width = pdf.width, height=pdf.height)
 
   # Select the columns for plotting
-  BFselect <- paste0("BF_", elicit.stage, "_", disttype, "_", alternative)
-  BFelicited <- grep(BFselect, colnames(BFWetzels))
-  BFdefault <- grep(paste0(alternative, "_default"), colnames(BFWetzels))
-  colselect <- c(BFelicited, BFdefault)
+  KLselect <- paste0("KL_", elicit.stage, "_", disttype)
+  colselect <- grep(KLselect, colnames(KLWetzels))
 
   # select rows for plotting
-  howmanyBFH1 <- rowSums(BFWetzels[, colselect]>1)
-  BFdirNum <- switch(BFdir,
-                     "H0"=0, "H1"=7, "Mixed"=c(1:6))
-  if(length(BFdirNum)==1){
-    BFWetzelsRed <- BFWetzels[howmanyBFH1==BFdirNum, colselect]
-  } else {
-    BFWetzelsRed <- BFWetzels[howmanyBFH1 %in% BFdirNum, colselect]
-  }
+  # howmanyBFH1 <- rowSums(BFWetzels[, colselect]>1)
+  # BFdirNum <- switch(BFdir,
+  #                    "H0"=0, "H1"=7, "Mixed"=c(1:6))
+  # if(length(BFdirNum)==1){
+  #   BFWetzelsRed <- BFWetzels[howmanyBFH1==BFdirNum, colselect]
+  # } else {
+  #   BFWetzelsRed <- BFWetzels[howmanyBFH1 %in% BFdirNum, colselect]
+  # }
+
+  KLWetzelsRed <- KLWetzels[,colselect]
 
   # Prepare plotting objects and parameters
-  N <- ifelse(nrow(BFWetzelsRed)>100, 100, nrow(BFWetzelsRed))
-  BFWetzelsRed <- apply(BFWetzelsRed, 2, as.numeric)
-  if(BFdir=="H0"){
-    yval <- log(1/BFWetzelsRed[1:N, ])
-    ylab <- bquote("log BF"["01"])
-  } else {
-    yval <- log(BFWetzelsRed[1:N, ])
-    ylab <- bquote("log BF"["10"])
-  }
-  ylim <- c(min(0, min(yval)), max(yval))
-  ytck <- pretty(ylim, min.n=3)
-  if(length(xtck)==0){
-    xtck <- pretty(c(1,N), min.n=3)
-    xtck[1] <- 1
-  }
+  N <- ifelse(nrow(KLWetzelsRed)>100, 100, nrow(KLWetzelsRed))
+  KLWetzelsRed <- apply(KLWetzelsRed, 2, as.numeric)
   cols <- ggsci::pal_uchicago("light", alpha = 1)(9)
 
   # Plot starts here
   par(mar=mar)
-  plot(c(1:N), yval[,1] , pch=15, col=cols[1], ylim=ylim,
+  plot(c(1:N), KLWetzelsRed[1:N,1], pch=15, col=cols[1],
        xlim=c(1,N), xaxt="n", yaxt="n", xlab="", ylab="", bty="n")
   apply(as.array(c(1:6)), MARGIN=1,
         FUN= function(x){
-          cols <- c(cols[c(2:5, 9)], "black")
-          points(c(1:N), yval[, x+1], pch=15, col=cols[x])
+          cols <- c(cols[c(2:5, 9)])
+          points(c(1:N), KLWetzelsRed[1:N, x+1], pch=15, col=cols[x])
         })
-  axis(side=1, at=xtck)
-  axis(side=2, pos=0, at=ytck, las=1)
+  axis(side=1, at=NULL)
+  axis(side=2, pos=0, at=NULL, las=1)
   apply(as.array(c(1:(N+1))), MARGIN = 1,
         FUN = function(x) abline(v=x-0.5, col="grey", lwd=0.5))
-  mtext(ylab, 2, cex=cex.text, line=line.ylab)
+  mtext("KL Divergence", 2, cex=cex.text, line=line.ylab)
   mtext("Study Number", 1, cex=cex.text, line=3)
-  if(BFdir=="Mixed") segments(1, 0, N, 0)
+  graphics::legend(x = 0, y = -0.1,
+                   legend = paste("Expert", c(1:6)),
+                   pch=rep(15,6), bty = "n", horiz = TRUE,
+                   xpd = NA, col = cols[c(1:5,9)], adj = 0,
+                   text.width = c(0.40, 0.40), cex=1.5)
+  segments(0, 1, 101, 1, col=cols[9],lwd=3)
   grDevices::dev.off()
 }

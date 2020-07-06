@@ -7,11 +7,11 @@ BF_Wetzels<- function(dat, prior){
   BFMATCHt <- suppressWarnings(bf10_t(t=dat[3], n1=dat[1], n2=dat[2], independentSamples=as.logical(dat[6]),
                                       prior.location=prior[25], prior.scale=prior[26], prior.df=prior[27]))
   BFMATCHnorm <- suppressWarnings(bf10_normal(t=dat[3], n1=dat[1], n2=dat[2], independentSamples=as.logical(dat[6]),
-                                              prior.mean=prior[23], prior.variance=prior[24]))
+                                              prior.mean=prior[23], prior.variance=prior[24]^2))
   BFShinyt <- suppressWarnings(bf10_t(t=dat[3], n1=dat[1], n2=dat[2], independentSamples=as.logical(dat[6]),
                                       prior.location=prior[31], prior.scale=prior[32], prior.df=prior[33]))
   BFShinynorm <- suppressWarnings(bf10_normal(t=dat[3], n1=dat[1], n2=dat[2], independentSamples=as.logical(dat[6]),
-                                              prior.mean=prior[29], prior.variance=prior[30]))
+                                              prior.mean=prior[29], prior.variance=prior[30]^2))
   res <- c(BFMATCHt, BFMATCHnorm, BFShinyt, BFShinynorm)
   names(res) <- paste0(c(rep("BF_MATCH_t_", 3), rep("BF_MATCH_norm_", 3),
                          rep("BF_Shiny_t_", 3), rep("BF_Shiny_norm_", 3)),
