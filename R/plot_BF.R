@@ -1,169 +1,141 @@
-#' Plot BF for the Bosco et al dataset
-#' @param BFBosco Dataset containing BF of Bosco et al. data
-#' @param elicit.stage Which stage of the elicitation process? "MATCH" = MATCH results, "Shiny" = Shiny results
-#' @param BFdir Which studies should be looked at? "H0" = all BFs point towards H0, "H1" = all BFs point towards H1, "Mixed" = direction of BF changes
-#' @param pdf.width Width of the pdf output
-#' @param pdf.height Height of the pdf output
-#' @param cex.text Font size of axis labels
-#' @param mar Margins of the plot to be inserted in par(mar=...)
-#' @param line.ylab Position of y-axis label relative to y axis (to be inserted in mtext(line=...))
-#' @param xtck Vector specifying location of tick marks on x-axis, automatically determined if xtcks=NULL (default)
-#' @importFrom grDevices pdf
-#' @importFrom grDevices dev.off
-#' @importFrom ggsci pal_uchicago
+#' Plot Bayes factors for increasing sample effect sizes in the Wetzels et al data
+#' @param WetzelsEtAl Wetzels et al. dataset
+#' @param BFWetzels Dataset containing Bayes factors for Wetzels data
+#' @param ExpertsPriors_tTest Dataset ExpertsPriors_tTest containing prior distribution data for the t-test
+#' @param elicit.stage "Shiny" or "MATCH" for elicited priors from Shiny app or MATCH
+#' @param alternative one out of "two.sided", "greater", or "less"
+#' @param disttype Which prior distribution family? "norm" for normal distribution, "t" for t-distribution
+#' @param percent Determines xlim bounds. Credible interval of the prior distributions.
 
-plotBFBosco <- function(BFBosco,
-                        elicit.stage=c("MATCH", "Shiny"),
-                        BFdir=c("H0", "H1", "Mixed"),
-                        pdf.width=8.5,
-                        pdf.height=4,
-                        cex.text=1.5,
-                        mar=c(5,3,1,1),
-                        line.ylab=1.5,
-                        xtck=NULL){
+plotBFWetzelsES <- function(WetzelsEtAl, BFWetzels, ExpertsPriors_tTest, elicit.stage, alternative, disttype, percent=0.3){
 
-  # PDF settings
-  path <- paste0("../Figures/plot_BFBosco", "_", elicit.stage, "_", BFdir, ".pdf")
-  grDevices::pdf(file = path, width = pdf.width, height=pdf.height)
-
-  # Select the columns for plotting
-  BFelicited <- grep(paste0("BF_", elicit.stage), colnames(BFBosco))
-  BFdefault <- grep("default", colnames(BFBosco))
-  colselect <- c(BFelicited, BFdefault)
-
-  # select rows for plotting
-  howmanyBFH1 <- rowSums(BFBosco[, colselect]>1)
-  BFdirNum <- switch(BFdir,
-                     "H0"=0, "H1"=7, "Mixed"=c(1:6))
-  if(length(BFdirNum)==1){
-    BFBoscoRed <- BFBosco[howmanyBFH1==BFdirNum, colselect]
-  } else {
-    BFBoscoRed <- BFBosco[howmanyBFH1 %in% BFdirNum, colselect]
-  }
-
-  # Prepare plotting objects and parameters
-  N <- ifelse(nrow(BFBoscoRed)>100, 100, nrow(BFBoscoRed))
-  if(BFdir=="H0"){
-    yval <- log(1/BFBoscoRed[1:N, ])
-    ylab <- bquote("log BF"["01"])
-  } else {
-    yval <- log(BFBoscoRed[1:N, ])
-    ylab <- bquote("log BF"["10"])
-  }
-  ylim <- c(min(0, min(yval)), max(yval))
-  ytck <- pretty(ylim, min.n=3)
-  if(length(xtck)==0){
-    xtck <- pretty(c(1,N), min.n=3)
-    xtck[1] <- 1
-  }
-  cols <- ggsci::pal_uchicago("light", alpha = 1)(9)
-
-  # Plot starts here
-  par(mar=mar)
-  plot(c(1:N), yval[,1] , pch=15, col=cols[1], ylim=ylim,
-       xlim=c(1,N), xaxt="n", yaxt="n", xlab="", ylab="", bty="n")
-  apply(as.array(c(1:6)), MARGIN=1,
-        FUN= function(x){
-          cols <- c(cols[c(2:5, 9)], "black")
-          points(c(1:N), yval[, x+1], pch=15, col=cols[x])
-        })
-  axis(side=1, at=xtck)
-  axis(side=2, pos=0, at=ytck, las=1)
-  apply(as.array(c(1:(N+1))), MARGIN = 1,
-        FUN = function(x) abline(v=x-0.5, col="grey", lwd=0.5))
-  mtext(ylab, 2, cex=cex.text, line=line.ylab)
-  mtext("Study Number", 1, cex=cex.text, line=3)
-  if(BFdir=="Mixed") segments(1, 0, N, 0)
-  grDevices::dev.off()
-}
-
-
-#' Plot BF for the Wetzels et al dataset
-#' @param BFWetzels Dataset containing BF of Wetzels et al. data
-#' @param disttype Which type of prior distribution? "norm" = normal, "t" = t-distribution
-#' @param elicit.stage Which stage of the elicitation process? "MATCH" = MATCH results, "Shiny" = Shiny results
-#' @param alternative Direction of Bayesian test: "two-sided" = two-sided test, "greater" = one-sided test delta > 0, "less" = one-sided test delta < 0
-#' @param BFdir Which studies should be looked at? "H0" = all BFs point towards H0, "H1" = all BFs point towards H1, "Mixed" = direction of BF changes
-#' @param pdf.width Width of the pdf output
-#' @param pdf.height Height of the pdf output
-#' @param cex.text Font size of axis labels
-#' @param mar Margins of the plot to be inserted in par(mar=...)
-#' @param line.ylab Position of y-axis label relative to y axis (to be inserted in mtext(line=...))
-#' @param xtck Vector specifying location of tick marks on x-axis, automatically determined if xtcks=NULL (default)
-#' @importFrom grDevices pdf
-#' @importFrom grDevices dev.off
-#' @importFrom ggsci pal_uchicago
-
-plotBFWetzels <- function(BFWetzels,
-                          disttype=c("norm","t"),
-                          elicit.stage=c("MATCH", "Shiny"),
-                          alternative=c("two.sided", "greater", "less"),
-                          BFdir=c("H0", "H1", "Mixed"),
-                          pdf.width=8.5,
-                          pdf.height=4,
-                          cex.text=1.5,
-                          mar=c(5,3,1,1),
-                          line.ylab=1.5,
-                          xtck=NULL){
-
-  # PDF settings
-  path <- paste0("../Figures/plot_BFWetzels", "_", elicit.stage, "_", disttype, "_", BFdir, ".pdf")
-  grDevices::pdf(file = path, width = pdf.width, height=pdf.height)
-
-  # Select the columns for plotting
+  # Define arguments
   alternative <- switch(alternative,
                         "two.sided"="BF10", "greater"="BFplus0", "less"="BFmin0")
+  a <- switch(alternative, "BF10"=-Inf, "BFplus0"=0, "BFmin0"=-Inf)
+  b <- switch(alternative, "BF10"=Inf, "BFplus0"=Inf, "BFmin0"=0)
+
+  # Select columns from Bayes factor dataset
   BFselect <- paste0("BF_", elicit.stage, "_", disttype, "_", alternative)
   BFelicited <- grep(BFselect, colnames(BFWetzels))
   BFdefault <- grep(paste0(alternative, "_default"), colnames(BFWetzels))
   colselect <- c(BFelicited, BFdefault)
 
-  # select rows for plotting
-  howmanyBFH1 <- rowSums(BFWetzels[, colselect]>1)
-  BFdirNum <- switch(BFdir,
-                  "H0"=0, "H1"=7, "Mixed"=c(1:6))
-  if(length(BFdirNum)==1){
-    BFWetzelsRed <- BFWetzels[howmanyBFH1==BFdirNum, colselect]
-  } else {
-    BFWetzelsRed <- BFWetzels[howmanyBFH1 %in% BFdirNum, colselect]
-  }
+  # Determine 80% credible intervals of priors to find plausible effect size ranges
+  cis <- matrix(NA, nrow=0, ncol=2)
 
-  # Prepare plotting objects and parameters
-  N <- ifelse(nrow(BFWetzelsRed)>100, 100, nrow(BFWetzelsRed))
-  BFWetzelsRed <- apply(BFWetzelsRed, 2, as.numeric)
-  if(BFdir=="H0"){
-    yval <- log(1/BFWetzelsRed[1:N, ])
-    ylab <- bquote("log BF"["01"])
-  } else {
-    yval <- log(BFWetzelsRed[1:N, ])
-    ylab <- bquote("log BF"["10"])
-  }
-  ylim <- c(min(0, min(yval)), max(yval))
-  ytck <- pretty(ylim, min.n=3)
-  if(length(xtck)==0){
-    xtck <- pretty(c(1,N), min.n=3)
-    xtck[1] <- 1
-  }
-  cols <- ggsci::pal_uchicago("light", alpha = 1)(9)
+  if(disttype=="norm"){
+    normcols <- switch(elicit.stage, "MATCH"=c(23:24), "Shiny"=c(29:30))
+    for(i in 1:6){
+      priorpar <- as.numeric(ExpertsPriors_tTest[i, normcols])
+      ci_exp <- c(truncnorm::qtruncnorm((1-percent)/2, a=a, b=b, mean=priorpar[1], sd=priorpar[2]),
+                  truncnorm::qtruncnorm(percent+(1-percent)/2, a=a, b=b, mean=priorpar[1], sd=priorpar[2]))
+      cis <- rbind(cis, ci_exp)
+    }
 
-  # Plot starts here
-  par(mar=mar)
-  plot(c(1:N), yval[,1] , pch=15, col=cols[1], ylim=ylim,
-       xlim=c(1,N), xaxt="n", yaxt="n", xlab="", ylab="", bty="n")
-  apply(as.array(c(1:6)), MARGIN=1,
-        FUN= function(x){
-          cols <- c(cols[c(2:5, 9)], "black")
-          points(c(1:N), yval[, x+1], pch=15, col=cols[x])
-        })
-  axis(side=1, at=xtck)
-  axis(side=2, pos=0, at=ytck, las=1)
-  apply(as.array(c(1:(N+1))), MARGIN = 1,
-        FUN = function(x) abline(v=x-0.5, col="grey", lwd=0.5))
-  mtext(ylab, 2, cex=cex.text, line=line.ylab)
-  mtext("Study Number", 1, cex=cex.text, line=3)
-  if(BFdir=="Mixed") segments(1, 0, N, 0)
+  } else if(disttype=="t"){
+
+    tcols <- switch(elicit.stage, "MATCH"=c(25:27), "Shiny"=c(31:33))
+    for(i in 1:6){
+      priorpar <- as.numeric(ExpertsPriors_tTest[i, tcols])
+      ci_exp <- c(qtss_trunc((1-percent)/2, a=a, b=b, mu=priorpar[1], r=priorpar[2], kappa=priorpar[3]),
+                  qtss_trunc(percent+(1-percent)/2, a=a, b=b, mu=priorpar[1], r=priorpar[2], kappa=priorpar[3]))
+      cis <- rbind(cis, ci_exp)
+    }
+  }
+  cis <- rbind(c(-1, 0), cis, c(1, 2))
+
+  # Order WetzelsEtAl and BFWetzels according to ES
+  WetzelsEtAlOrdered <- WetzelsEtAl[order(WetzelsEtAl$effectsize),]
+  BFWetzelsOrdered <- BFWetzels[order(WetzelsEtAl$effectsize),]
+
+  # Plot BF within ES ranges
+  cols <- ggsci::pal_uchicago("light", alpha = 0.8)(9)[c(1:5,9)]
+  cols <- c(cols, "black")
+  path <- paste0("../Figures/plot_BFWetzels", "_", elicit.stage, "_", alternative, "_", disttype, ".pdf")
+  grDevices::pdf(file = path, width = 9.2, height=7.2)
+  par(mar=c(7,5,1,1))
+  for(i in 1:nrow(cis)){
+    xval <- WetzelsEtAlOrdered$effectsize[WetzelsEtAlOrdered$effectsize <= cis[i, 2] & WetzelsEtAlOrdered$effectsize >= cis[i, 1]]
+    yval <- BFWetzelsOrdered[WetzelsEtAlOrdered$effectsize <= cis[i, 2] & WetzelsEtAlOrdered$effectsize >= cis[i, 1], colselect]
+    xlim <- cis[i,]
+    ylim <- round(c(min(log(as.numeric(unlist(yval)))), max(log(as.numeric(unlist(yval))))), 2)
+    plot(xval, log(as.numeric(yval[,1])),
+         pch=15, col=cols[1], xlim=xlim, cex=1, ylim=ylim,
+         xlab="Effect Size", ylab="log BF", cex.lab=1.5,
+         bty="l")
+    for(j in 2:ncol(yval)){
+      points(xval, log(as.numeric(yval[,j])), pch=15, col=cols[j], cex=1, xpd=NA)
+    }
+    legend(x=xlim[1]-(xlim[2]-xlim[1])/10, y=ylim[1]-(ylim[2]-ylim[1])/4.5,
+           legend=c(paste("Expert", c(1:6)), "Default Prior"),
+           pch=15, col=cols, bty="n", horiz=TRUE, xpd=NA)
+
+  }
   grDevices::dev.off()
+
 }
 
 
+#' Plot Bayes factors for increasing sample effect sizes in the Bosco et al data
+#' @param BoscoEtAl Bosco et al. dataset
+#' @param BFBosco Dataset containing Bayes factors for Bosco data
+#' @param ExpertsPriors_cor Dataset ExpertsPriors_tTest containing prior distribution data for the t-test
+#' @param elicit.stage "Shiny" or "MATCH" for elicited priors from Shiny app or MATCH
+#' @param percent Determines xlim bounds. Credible interval of the prior distributions.
+#' @importFrom stats rnorm
+#' @importFrom stats qbeta
 
+plotBFBoscoES <- function(BoscoEtAl, BFBosco, ExpertsPriors_cor, elicit.stage, percent=0.3){
+
+  # Select columns from Bayes factor dataset
+  BFselect <- paste0("BF_", elicit.stage)
+  BFelicited <- grep(BFselect, colnames(BFBosco))
+  BFdefault <- grep("_default", colnames(BFBosco))
+  colselect <- c(BFelicited, BFdefault)
+
+  # Determine 80% credible intervals of priors to find plausible effect size ranges
+  cis <- matrix(NA, nrow=0, ncol=2)
+  priorcols <- switch(elicit.stage, "MATCH"=c(23:24), "Shiny"=c(26:27))
+  for(i in 1:6){
+    priorpar <- as.numeric(ExpertsPriors_cor[i, priorcols])
+    ci_exp <- c(stats::qbeta((1-percent)/2, shape1=priorpar[1], shape2=priorpar[2]),
+                stats::qbeta(percent+(1-percent)/2, shape1=priorpar[1], shape2=priorpar[2]))
+    cis <- rbind(cis, ci_exp)
+  }
+  cis <- rbind(c(-0.5, min(cis)), cis, c(max(cis), 1))
+
+  # Order BoscoEtAl and BFBosco according to ES
+  BoscoEtAlRed <- BoscoEtAl[rownames(BFBosco), ]
+  BoscoEtAlOrdered <- BoscoEtAlRed[order(BoscoEtAlRed$r),]
+  BFBoscoOrdered <- BFBosco[order(BoscoEtAlRed$r),]
+
+  # Plot BF within ES ranges
+  cols <- ggsci::pal_uchicago("light", alpha = 0.8)(9)[c(1:5,9)]
+  cols <- c(cols, "black")
+
+  path <- paste0("../Figures/plot_BFBosco", "_", elicit.stage, ".pdf")
+  grDevices::pdf(file = path, width = 9.2, height=7.2)
+
+  par(mar=c(7,5,1,1))
+  for(i in 1:nrow(cis)){
+    xval <- BoscoEtAlOrdered$r[BoscoEtAlOrdered$r <= cis[i, 2] & BoscoEtAlOrdered$r >= cis[i, 1]]
+    xval <- xval+stats::rnorm(length(xval), 0, 0.001)
+    yval <- BFBoscoOrdered[BoscoEtAlOrdered$r <= cis[i, 2] & BoscoEtAlOrdered$r >= cis[i, 1], colselect]
+    xlim <- cis[i,]
+    ylim <- round(c(min(log(as.numeric(unlist(yval)))), max(log(as.numeric(unlist(yval))))), 2)
+    plot(xval, log(as.numeric(yval[,1])),
+         pch=15, col=cols[1], xlim=xlim, cex=1, ylim=ylim,
+         xlab="Effect Size", ylab="log BF", cex.lab=1.5,
+         bty="l")
+    for(j in 2:ncol(yval)){
+      points(xval, log(as.numeric(yval[,j])), pch=15, col=cols[j], cex=1, xpd=NA)
+    }
+    legend(x=xlim[1]-(xlim[2]-xlim[1])/10, y=ylim[1]-(ylim[2]-ylim[1])/4.5,
+           legend=c(paste("Expert", c(1:6)), "Default Prior"),
+           pch=15, col=cols, bty="n", horiz=TRUE, xpd=NA)
+
+  }
+  grDevices::dev.off()
+
+}
