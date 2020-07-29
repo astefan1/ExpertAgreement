@@ -11,7 +11,7 @@ plotdata <- function(WetzelsEtAl, BoscoEtAl, seed=1234){
        xlab="", ylab="", bty="l")
   mtext("Sample Size (per group)", side=2, cex=1.2, line=3)
   mtext(bquote("Effect Size "*delta), side=1, cex=1.2, line=3)
-  mtext("Data: Wetzels et. al (2011)", side=3, cex=1.5, line=1.5)
+  mtext("Data: Wetzels et al. (2011)", side=3, cex=1.5, line=1.5)
 
   # Bosco et al
 
@@ -31,7 +31,7 @@ plotdata <- function(WetzelsEtAl, BoscoEtAl, seed=1234){
        xlab="", ylab="", bty="l")
   mtext("Sample Size (per group)", side=2, cex=1.2, line=3)
   mtext(bquote("Effect Size "*rho), side=1, cex=1.2, line=3)
-  mtext("Data: Bosco et. al (2015)", side=3, cex=1.5, line=1.5)
+  mtext("Data: Bosco et al. (2015)", side=3, cex=1.5, line=1.5)
 
   grDevices::dev.off()
 }

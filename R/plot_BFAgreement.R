@@ -27,11 +27,21 @@ plotBFDirectionBosco <- function(BFBosco, elicit.stage){
   # Do the actual plotting
   p <- ggplot(data=melted_out, aes(Var2, Var1, fill=value)) +
     geom_tile(color="white") +
-    scale_fill_gradient2(low="red", high="darkgreen", mid="lightgrey", name="Same Direction", limit=c(0,1), midpoint=0.5) +
-    theme_void() +
-    theme(axis.text.x = element_text(angle=45, vjust=1, size=12, hjust=1))+
+    scale_fill_gradient2(low="red", high="darkgreen", mid="gold2",
+                         name="Same Direction", limit=c(0,1), midpoint=0.5) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle=45, vjust=1, size=12, hjust=1),
+          panel.background = element_blank(),
+          panel.grid.major = element_blank(),
+          axis.title.y = element_blank(),
+          axis.title.x = element_blank(),
+          axis.text.y = element_text(size=12),
+          plot.title = element_text(size=14),
+          legend.position = c(0.11,0.82))+
     coord_fixed() +
-    geom_text(aes(Var2, Var1, label = value), color = "white", size = 4)
+    geom_text(aes(Var2, Var1, label = value), color = "white", size = 4) +
+    scale_y_discrete(position="right") +
+    ggtitle("Data: Bosco et al. (2015)")
 
   ggsave(filename=paste0("plot_BF_DirectionBosco_", elicit.stage,".pdf"),
          plot=p,
@@ -70,11 +80,21 @@ plotBFDirectionWetzels <- function(BFWetzels, elicit.stage, disttype){
   # Do the actual plotting
   p <- ggplot(data=melted_out, aes(Var2, Var1, fill=value)) +
     geom_tile(color="white") +
-    scale_fill_gradient2(low="red", high="darkgreen", mid="lightgrey", name="Same Direction", limit=c(0,1), midpoint=0.5) +
-    theme_void() +
-    theme(axis.text.x = element_text(angle=45, vjust=1, size=12, hjust=1))+
+    scale_fill_gradient2(low="red", high="darkgreen", mid="gold2",
+                         name="Same Direction", limit=c(0,1), midpoint=0.5) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle=45, vjust=1, size=12, hjust=1),
+          panel.background = element_blank(),
+          panel.grid.major = element_blank(),
+          axis.title.y = element_blank(),
+          axis.title.x = element_blank(),
+          axis.text.y = element_text(size=12),
+          plot.title = element_text(size=14),
+          legend.position = c(0.11,0.82))+
     coord_fixed() +
-    geom_text(aes(Var2, Var1, label = value), color = "white", size = 4)
+    geom_text(aes(Var2, Var1, label = value), color = "white", size = 4) +
+    scale_y_discrete(position="right") +
+    ggtitle("Data: Wetzels et al. (2011)")
 
   ggsave(filename=paste0("plot_BF_DirectionWetzels_", elicit.stage, "_", disttype, ".pdf"),
          plot=p,
@@ -114,11 +134,21 @@ plotEvidenceChangeBosco <- function(BFBosco, elicit.stage, threshold){
   # Do the actual plotting
   p <- ggplot(data=melted_out, aes(Var2, Var1, fill=value)) +
     geom_tile(color="white") +
-    scale_fill_gradient2(low="red", high="darkgreen", mid="lightgrey", name="Same Evidence Category", limit=c(0,1), midpoint=0.5) +
-    theme_void() +
-    theme(axis.text.x = element_text(angle=45, vjust=1, size=12, hjust=1))+
+    scale_fill_gradient2(low="red", high="darkgreen", mid="gold2",
+                         name="Same Evidence Category", limit=c(0,1), midpoint=0.5) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle=45, vjust=1, size=12, hjust=1),
+          panel.background = element_blank(),
+          panel.grid.major = element_blank(),
+          axis.title.y = element_blank(),
+          axis.title.x = element_blank(),
+          axis.text.y = element_text(size=12),
+          plot.title = element_text(size=14),
+          legend.position = c(0.11,0.82))+
     coord_fixed() +
-    geom_text(aes(Var2, Var1, label = value), color = "white", size = 4)
+    geom_text(aes(Var2, Var1, label = value), color = "white", size = 4) +
+    scale_y_discrete(position="right") +
+    ggtitle("Data: Bosco et al. (2015)")
 
   ggsave(filename=paste0("plot_EvidenceChange_Bosco_", elicit.stage,".pdf"),
          plot=p,
@@ -162,11 +192,21 @@ plotEvidenceChangeWetzels <- function(BFWetzels, elicit.stage, threshold, distty
   # Do the actual plotting
   p <- ggplot(data=melted_out, aes(Var2, Var1, fill=value)) +
     geom_tile(color="white") +
-    scale_fill_gradient2(low="red", high="darkgreen", mid="lightgrey", name="Same Evidence Category", limit=c(0,1), midpoint=0.5) +
-    theme_void() +
-    theme(axis.text.x = element_text(angle=45, vjust=1, size=12, hjust=1))+
+    scale_fill_gradient2(low="red", high="darkgreen", mid="gold2",
+                         name="Same Evidence Category", limit=c(0,1), midpoint=0.5) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle=45, vjust=1, size=12, hjust=1),
+          panel.background = element_blank(),
+          panel.grid.major = element_blank(),
+          axis.title.y = element_blank(),
+          axis.title.x = element_blank(),
+          axis.text.y = element_text(size=12),
+          plot.title = element_text(size=14),
+          legend.position = c(0.11,0.82))+
     coord_fixed() +
-    geom_text(aes(Var2, Var1, label = value), color = "white", size = 4)
+    geom_text(aes(Var2, Var1, label = value), color = "white", size = 4) +
+    scale_y_discrete(position="right") +
+    ggtitle("Data: Wetzels et al. (2011)")
 
   ggsave(filename=paste0("plot_EvidenceChange_Wetzels_", elicit.stage, "_", disttype, ".pdf"),
          plot=p,
