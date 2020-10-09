@@ -7,8 +7,8 @@ plotdata <- function(WetzelsEtAl, BoscoEtAl, seed=1234){
   par(mfrow=c(1,2))
   # Wetzels et al
   plot(WetzelsEtAl$effectsize, WetzelsEtAl$N1,
-       pch=19, col=scales::alpha("grey26", 0.9),
-       xlab="", ylab="", bty="l")
+       pch=21, bg=scales::alpha("grey26", 0.5), col="black",
+       xlab="", ylab="", bty="l", las=1)
   mtext("Sample Size (per group)", side=2, cex=1.2, line=3)
   mtext(bquote("Effect Size "*delta), side=1, cex=1.2, line=3)
   mtext("Data: Wetzels et al. (2011)", side=3, cex=1.5, line=1.5)
@@ -27,9 +27,9 @@ plotdata <- function(WetzelsEtAl, BoscoEtAl, seed=1234){
 
   ## plot
   plot(BoscoEtAlRed$r, BoscoEtAlRed$N,
-       pch=19, col=scales::alpha("grey26", 0.9),
-       xlab="", ylab="", bty="l")
-  mtext("Sample Size (per group)", side=2, cex=1.2, line=3)
+       pch=21, bg=scales::alpha("grey26", 0.5), col="black",
+       xlab="", ylab="", bty="l", las=1)
+  mtext("Sample Size", side=2, cex=1.2, line=3)
   mtext(bquote("Effect Size "*rho), side=1, cex=1.2, line=3)
   mtext("Data: Bosco et al. (2015)", side=3, cex=1.5, line=1.5)
 

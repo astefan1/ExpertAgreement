@@ -20,26 +20,31 @@ plotBFDirectionBosco <- function(BFBosco, elicit.stage){
   # Prepare data for plot
   colnames(out) <- c(paste0("Expert", c(1:6)), "Default")
   rownames(out) <- colnames(out)
-  out <- round(out, 2) # round percentages to 2 decimals
   out[lower.tri(out)] <- NA
   melted_out <- reshape2::melt(out, na.rm=TRUE)
+  melted_out$label <- paste0(round(melted_out$value*100, 1), "%")
 
   # Do the actual plotting
   p <- ggplot(data=melted_out, aes(Var2, Var1, fill=value)) +
     geom_tile(color="white") +
     scale_fill_gradient2(low="red", high="darkgreen", mid="gold2",
-                         name="Same Direction", limit=c(0,1), midpoint=0.5) +
+                         name="Agreement on Direction", limit=c(0,1), midpoint=0.5,
+                         labels=c("0%", "25%", "50%", "75%", "100%"), breaks = c(0, 0.25, 0.5, 0.75, 1)) +
     theme_minimal() +
-    theme(axis.text.x = element_text(angle=45, vjust=1, size=12, hjust=1),
+    theme(axis.text.x = element_text(angle=45, vjust=1, size=18, hjust=1),
           panel.background = element_blank(),
           panel.grid.major = element_blank(),
           axis.title.y = element_blank(),
           axis.title.x = element_blank(),
-          axis.text.y = element_text(size=12),
-          plot.title = element_text(size=14),
-          legend.position = c(0.11,0.82))+
+          axis.text.y = element_text(size=18),
+          plot.title = element_text(size=20),
+          legend.position = c(0.11,0.82),
+          legend.text = element_text(size=16),
+          legend.title = element_text(size=18),
+          legend.spacing.y = unit(10, "pt"),
+          legend.key.height = unit(25, "pt"))+
     coord_fixed() +
-    geom_text(aes(Var2, Var1, label = value), color = "white", size = 4) +
+    geom_text(aes(Var2, Var1, label = label), color = "white", size = 7) +
     scale_y_discrete(position="right") +
     ggtitle("Data: Bosco et al. (2015)")
 
@@ -73,26 +78,31 @@ plotBFDirectionWetzels <- function(BFWetzels, elicit.stage, disttype){
   # Prepare data for plot
   colnames(out) <- c(paste0("Expert", c(1:6)), "Default")
   rownames(out) <- colnames(out)
-  out <- round(out, 2) # round percentages to 2 decimals
   out[lower.tri(out)] <- NA
   melted_out <- reshape2::melt(out, na.rm=TRUE)
+  melted_out$label <- paste0(round(melted_out$value*100, 1), "%")
 
   # Do the actual plotting
   p <- ggplot(data=melted_out, aes(Var2, Var1, fill=value)) +
     geom_tile(color="white") +
     scale_fill_gradient2(low="red", high="darkgreen", mid="gold2",
-                         name="Same Direction", limit=c(0,1), midpoint=0.5) +
+                         name="Agreement on Direction", limit=c(0,1), midpoint=0.5,
+                         labels=c("0%", "25%", "50%", "75%", "100%"), breaks = c(0, 0.25, 0.5, 0.75, 1)) +
     theme_minimal() +
-    theme(axis.text.x = element_text(angle=45, vjust=1, size=12, hjust=1),
+    theme(axis.text.x = element_text(angle=45, vjust=1, size=18, hjust=1),
           panel.background = element_blank(),
           panel.grid.major = element_blank(),
           axis.title.y = element_blank(),
           axis.title.x = element_blank(),
-          axis.text.y = element_text(size=12),
-          plot.title = element_text(size=14),
-          legend.position = c(0.11,0.82))+
+          axis.text.y = element_text(size=18),
+          plot.title = element_text(size=20),
+          legend.position = c(0.11,0.82),
+          legend.text = element_text(size=16),
+          legend.title = element_text(size=18),
+          legend.spacing.y = unit(10, "pt"),
+          legend.key.height = unit(25, "pt"))+
     coord_fixed() +
-    geom_text(aes(Var2, Var1, label = value), color = "white", size = 4) +
+    geom_text(aes(Var2, Var1, label = label), color = "white", size = 7) +
     scale_y_discrete(position="right") +
     ggtitle("Data: Wetzels et al. (2011)")
 
@@ -127,26 +137,31 @@ plotEvidenceChangeBosco <- function(BFBosco, elicit.stage, threshold){
   # Prepare data for plot
   colnames(out) <- c(paste0("Expert", c(1:6)), "Default")
   rownames(out) <- colnames(out)
-  out <- round(out, 2) # round percentages to 2 decimals
   out[lower.tri(out)] <- NA
   melted_out <- reshape2::melt(out, na.rm=TRUE)
+  melted_out$label <- paste0(round(melted_out$value*100, 1), "%")
 
   # Do the actual plotting
   p <- ggplot(data=melted_out, aes(Var2, Var1, fill=value)) +
     geom_tile(color="white") +
     scale_fill_gradient2(low="red", high="darkgreen", mid="gold2",
-                         name="Same Evidence Category", limit=c(0,1), midpoint=0.5) +
+                         name="Agreement on Evidence Category", limit=c(0,1), midpoint=0.5,
+                         labels=c("0%", "25%", "50%", "75%", "100%"), breaks = c(0, 0.25, 0.5, 0.75, 1)) +
     theme_minimal() +
-    theme(axis.text.x = element_text(angle=45, vjust=1, size=12, hjust=1),
+    theme(axis.text.x = element_text(angle=45, vjust=1, size=18, hjust=1),
           panel.background = element_blank(),
           panel.grid.major = element_blank(),
           axis.title.y = element_blank(),
           axis.title.x = element_blank(),
-          axis.text.y = element_text(size=12),
-          plot.title = element_text(size=14),
-          legend.position = c(0.11,0.82))+
+          axis.text.y = element_text(size=18),
+          plot.title = element_text(size=20),
+          legend.position = c(0.25,0.82),
+          legend.text = element_text(size=16),
+          legend.title = element_text(size=18),
+          legend.spacing.y = unit(10, "pt"),
+          legend.key.height = unit(25, "pt"))+
     coord_fixed() +
-    geom_text(aes(Var2, Var1, label = value), color = "white", size = 4) +
+    geom_text(aes(Var2, Var1, label = label), color = "white", size = 7) +
     scale_y_discrete(position="right") +
     ggtitle("Data: Bosco et al. (2015)")
 
@@ -185,26 +200,31 @@ plotEvidenceChangeWetzels <- function(BFWetzels, elicit.stage, threshold, distty
   # Prepare data for plot
   colnames(out) <- c(paste0("Expert", c(1:6)), "Default")
   rownames(out) <- colnames(out)
-  out <- round(out, 2) # round percentages to 2 decimals
   out[lower.tri(out)] <- NA
   melted_out <- reshape2::melt(out, na.rm=TRUE)
+  melted_out$label <- paste0(round(melted_out$value*100, 1), "%")
 
   # Do the actual plotting
   p <- ggplot(data=melted_out, aes(Var2, Var1, fill=value)) +
     geom_tile(color="white") +
     scale_fill_gradient2(low="red", high="darkgreen", mid="gold2",
-                         name="Same Evidence Category", limit=c(0,1), midpoint=0.5) +
+                         name="Agreement on Evidence Category", limit=c(0,1), midpoint=0.5,
+                         labels=c("0%", "25%", "50%", "75%", "100%"), breaks = c(0, 0.25, 0.5, 0.75, 1)) +
     theme_minimal() +
-    theme(axis.text.x = element_text(angle=45, vjust=1, size=12, hjust=1),
+    theme(axis.text.x = element_text(angle=45, vjust=1, size=18, hjust=1),
           panel.background = element_blank(),
           panel.grid.major = element_blank(),
           axis.title.y = element_blank(),
           axis.title.x = element_blank(),
-          axis.text.y = element_text(size=12),
-          plot.title = element_text(size=14),
-          legend.position = c(0.11,0.82))+
+          axis.text.y = element_text(size=18),
+          plot.title = element_text(size=20),
+          legend.position = c(0.25,0.82),
+          legend.text = element_text(size=16),
+          legend.title = element_text(size=18),
+          legend.spacing.y = unit(10, "pt"),
+          legend.key.height = unit(25, "pt"))+
     coord_fixed() +
-    geom_text(aes(Var2, Var1, label = value), color = "white", size = 4) +
+    geom_text(aes(Var2, Var1, label = label), color = "white", size = 7) +
     scale_y_discrete(position="right") +
     ggtitle("Data: Wetzels et al. (2011)")
 
