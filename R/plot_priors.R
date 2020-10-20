@@ -70,6 +70,7 @@ plotpriors_cor <- function(ExpertsPriors_cor, ylim){
 #' Plot Default Prior Distributions
 #' @import ggsci
 #' @import graphics
+#' @importFrom stats dunif
 
 plotpriors_default <- function(){
 
@@ -79,7 +80,7 @@ plotpriors_default <- function(){
   graphics::par(mfrow=c(1,2), mar= c(5, 4.2, 4, 2) + 0.1)
   pts <- seq(0, 1, by = 0.001)
   yt <- dtss_trunc(x=pts, mu=0, r=sqrt(2)/2, kappa=1, a=0, b=Inf)
-  ycor <- dunif(x=pts, min = 0, max = 1)
+  ycor <- stats::dunif(x=pts, min = 0, max = 1)
 
   plot(pts, ycor, ylab = "Density", xlab = bquote(rho), ylim = c(0, 8),
        bty="l", type = "l", lwd=2, las=1,

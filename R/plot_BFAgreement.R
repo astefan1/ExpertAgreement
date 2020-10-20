@@ -4,6 +4,7 @@
 #' @param BFBosco Dataset containing Bayes factors for Bosco data
 #' @param elicit.stage Either "MATCH" or "Shiny"
 #' @import ggplot2
+#' @importFrom rlang .data
 
 plotBFDirectionBosco <- function(BFBosco, elicit.stage){
 
@@ -25,7 +26,7 @@ plotBFDirectionBosco <- function(BFBosco, elicit.stage){
   melted_out$label <- paste0(round(melted_out$value*100, 1), "%")
 
   # Do the actual plotting
-  p <- ggplot(data=melted_out, aes(Var2, Var1, fill=value)) +
+  p <- ggplot(data=melted_out, aes(.data$Var2, .data$Var1, fill=.data$value)) +
     geom_tile(color="white") +
     scale_fill_gradient2(low="red", high="darkgreen", mid="gold2",
                          name="Agreement on Direction", limit=c(0,1), midpoint=0.5,
@@ -44,7 +45,7 @@ plotBFDirectionBosco <- function(BFBosco, elicit.stage){
           legend.spacing.y = unit(10, "pt"),
           legend.key.height = unit(25, "pt"))+
     coord_fixed() +
-    geom_text(aes(Var2, Var1, label = label), color = "white", size = 7) +
+    geom_text(aes(.data$Var2, .data$Var1, label = .data$label), color = "white", size = 7) +
     scale_y_discrete(position="right") +
     ggtitle("Data: Bosco et al. (2015)")
 
@@ -60,6 +61,7 @@ plotBFDirectionBosco <- function(BFBosco, elicit.stage){
 #' @param elicit.stage Either "MATCH" or "Shiny"
 #' @param disttype Either "t" or "norm"
 #' @import ggplot2
+#' @importFrom rlang .data
 
 plotBFDirectionWetzels <- function(BFWetzels, elicit.stage, disttype){
 
@@ -83,7 +85,7 @@ plotBFDirectionWetzels <- function(BFWetzels, elicit.stage, disttype){
   melted_out$label <- paste0(round(melted_out$value*100, 1), "%")
 
   # Do the actual plotting
-  p <- ggplot(data=melted_out, aes(Var2, Var1, fill=value)) +
+  p <- ggplot(data=melted_out, aes(.data$Var2, .data$Var1, fill=.data$value)) +
     geom_tile(color="white") +
     scale_fill_gradient2(low="red", high="darkgreen", mid="gold2",
                          name="Agreement on Direction", limit=c(0,1), midpoint=0.5,
@@ -102,7 +104,7 @@ plotBFDirectionWetzels <- function(BFWetzels, elicit.stage, disttype){
           legend.spacing.y = unit(10, "pt"),
           legend.key.height = unit(25, "pt"))+
     coord_fixed() +
-    geom_text(aes(Var2, Var1, label = label), color = "white", size = 7) +
+    geom_text(aes(.data$Var2, .data$Var1, label = .data$label), color = "white", size = 7) +
     scale_y_discrete(position="right") +
     ggtitle("Data: Wetzels et al. (2011)")
 
@@ -117,6 +119,7 @@ plotBFDirectionWetzels <- function(BFWetzels, elicit.stage, disttype){
 #' @param elicit.stage Either "MATCH" or "Shiny"
 #' @param threshold BF threshold
 #' @import ggplot2
+#' @importFrom rlang .data
 
 plotEvidenceChangeBosco <- function(BFBosco, elicit.stage, threshold){
 
@@ -142,7 +145,7 @@ plotEvidenceChangeBosco <- function(BFBosco, elicit.stage, threshold){
   melted_out$label <- paste0(round(melted_out$value*100, 1), "%")
 
   # Do the actual plotting
-  p <- ggplot(data=melted_out, aes(Var2, Var1, fill=value)) +
+  p <- ggplot(data=melted_out, aes(.data$Var2, .data$Var1, fill=.data$value)) +
     geom_tile(color="white") +
     scale_fill_gradient2(low="red", high="darkgreen", mid="gold2",
                          name="Agreement on Evidence Category", limit=c(0,1), midpoint=0.5,
@@ -161,7 +164,7 @@ plotEvidenceChangeBosco <- function(BFBosco, elicit.stage, threshold){
           legend.spacing.y = unit(10, "pt"),
           legend.key.height = unit(25, "pt"))+
     coord_fixed() +
-    geom_text(aes(Var2, Var1, label = label), color = "white", size = 7) +
+    geom_text(aes(.data$Var2, .data$Var1, label = .data$label), color = "white", size = 7) +
     scale_y_discrete(position="right") +
     ggtitle("Data: Bosco et al. (2015)")
 
@@ -172,11 +175,12 @@ plotEvidenceChangeBosco <- function(BFBosco, elicit.stage, threshold){
 }
 
 #' Function to plot the agreement in evidence strength between Bayes factors for the Wetzels data
-#' @param BFBosco Dataset containing Bayes factors for Bosco data
+#' @param BFWetzels Dataset containing Bayes factors for Bosco data
 #' @param elicit.stage Either "MATCH" or "Shiny"
 #' @param disttype Either "t" or "norm"
 #' @param threshold BF threshold
 #' @import ggplot2
+#' @importFrom rlang .data
 
 plotEvidenceChangeWetzels <- function(BFWetzels, elicit.stage, threshold, disttype){
 
@@ -205,7 +209,7 @@ plotEvidenceChangeWetzels <- function(BFWetzels, elicit.stage, threshold, distty
   melted_out$label <- paste0(round(melted_out$value*100, 1), "%")
 
   # Do the actual plotting
-  p <- ggplot(data=melted_out, aes(Var2, Var1, fill=value)) +
+  p <- ggplot(data=melted_out, aes(.data$Var2, .data$Var1, fill=.data$value)) +
     geom_tile(color="white") +
     scale_fill_gradient2(low="red", high="darkgreen", mid="gold2",
                          name="Agreement on Evidence Category", limit=c(0,1), midpoint=0.5,
@@ -224,7 +228,7 @@ plotEvidenceChangeWetzels <- function(BFWetzels, elicit.stage, threshold, distty
           legend.spacing.y = unit(10, "pt"),
           legend.key.height = unit(25, "pt"))+
     coord_fixed() +
-    geom_text(aes(Var2, Var1, label = label), color = "white", size = 7) +
+    geom_text(aes(.data$Var2, .data$Var1, label = .data$label), color = "white", size = 7) +
     scale_y_discrete(position="right") +
     ggtitle("Data: Wetzels et al. (2011)")
 

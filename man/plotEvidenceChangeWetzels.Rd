@@ -7,13 +7,13 @@
 plotEvidenceChangeWetzels(BFWetzels, elicit.stage, threshold, disttype)
 }
 \arguments{
+\item{BFWetzels}{Dataset containing Bayes factors for Bosco data}
+
 \item{elicit.stage}{Either "MATCH" or "Shiny"}
 
 \item{threshold}{BF threshold}
 
 \item{disttype}{Either "t" or "norm"}
-
-\item{BFBosco}{Dataset containing Bayes factors for Bosco data}
 }
 \description{
 Function to plot the agreement in evidence strength between Bayes factors for the Wetzels data

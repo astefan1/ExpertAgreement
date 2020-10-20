@@ -17,7 +17,9 @@ Imports:
     logOfGamma,
     ggsci,
     grDevices,
-    SuppDists
+    SuppDists,
+    ggplot2,
+    rlang
 Suggests: 
     readxl,
     testthat
