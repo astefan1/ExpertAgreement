@@ -28,6 +28,6 @@ cor_BF10 <- function(N, R, alpha_prior, beta_prior){
   suppressWarnings(L1/L0)
 }
 
-a=Sys.time()
-cor_BF10(100, 0.3, 3, 3)
-Sys.time()-a
+# a=Sys.time()
+# cor_BF10(100, 0.3, 3, 3)
+# Sys.time()-a

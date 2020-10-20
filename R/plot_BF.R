@@ -21,7 +21,7 @@ plotBFWetzelsES <- function(WetzelsEtAl, BFWetzels, ExpertsPriors_tTest, elicit.
   BFdefault <- grep(paste0(alternative, "_default"), colnames(BFWetzels))
   colselect <- c(BFelicited, BFdefault)
 
-  # Determine 80% credible intervals of priors to find plausible effect size ranges
+  # Determine credible intervals of priors to find plausible effect size ranges
   cis <- matrix(NA, nrow=0, ncol=2)
 
   if(disttype=="norm"){
@@ -61,15 +61,15 @@ plotBFWetzelsES <- function(WetzelsEtAl, BFWetzels, ExpertsPriors_tTest, elicit.
     xlim <- cis[i,]
     ylim <- round(c(min(log(as.numeric(unlist(yval)))), max(log(as.numeric(unlist(yval))))), 2)
     plot(xval, log(as.numeric(yval[,1])),
-         pch=15, col=cols[1], xlim=xlim, cex=1, ylim=ylim,
-         xlab="Effect Size", ylab="log BF", cex.lab=1.5,
-         bty="l")
+         pch=19, col=cols[1], xlim=xlim, cex=1, ylim=ylim,
+         xlab="Effect Size", ylab=bquote("log BF"[10]), cex.lab=1.5,
+         bty="l", las=1)
     for(j in 2:ncol(yval)){
-      points(xval, log(as.numeric(yval[,j])), pch=15, col=cols[j], cex=1, xpd=NA)
+      points(xval, log(as.numeric(yval[,j])), pch=19, col=cols[j], cex=1, xpd=NA)
     }
     legend(x=xlim[1]-(xlim[2]-xlim[1])/10, y=ylim[1]-(ylim[2]-ylim[1])/4.5,
            legend=c(paste("Expert", c(1:6)), "Default Prior"),
-           pch=15, col=cols, bty="n", horiz=TRUE, xpd=NA)
+           pch=19, col=cols, bty="n", horiz=TRUE, xpd=NA)
 
   }
   grDevices::dev.off()
@@ -94,7 +94,7 @@ plotBFBoscoES <- function(BoscoEtAl, BFBosco, ExpertsPriors_cor, elicit.stage, p
   BFdefault <- grep("_default", colnames(BFBosco))
   colselect <- c(BFelicited, BFdefault)
 
-  # Determine 80% credible intervals of priors to find plausible effect size ranges
+  # Determine credible intervals of priors to find plausible effect size ranges
   cis <- matrix(NA, nrow=0, ncol=2)
   priorcols <- switch(elicit.stage, "MATCH"=c(23:24), "Shiny"=c(26:27))
   for(i in 1:6){
@@ -125,15 +125,15 @@ plotBFBoscoES <- function(BoscoEtAl, BFBosco, ExpertsPriors_cor, elicit.stage, p
     xlim <- cis[i,]
     ylim <- round(c(min(log(as.numeric(unlist(yval)))), max(log(as.numeric(unlist(yval))))), 2)
     plot(xval, log(as.numeric(yval[,1])),
-         pch=15, col=cols[1], xlim=xlim, cex=1, ylim=ylim,
-         xlab="Effect Size", ylab="log BF", cex.lab=1.5,
-         bty="l")
+         pch=19, col=cols[1], xlim=xlim, cex=1, ylim=ylim,
+         xlab="Effect Size", ylab=bquote("log BF"[10]), cex.lab=1.5,
+         bty="l", las=1)
     for(j in 2:ncol(yval)){
-      points(xval, log(as.numeric(yval[,j])), pch=15, col=cols[j], cex=1, xpd=NA)
+      points(xval, log(as.numeric(yval[,j])), pch=19, col=cols[j], cex=1, xpd=NA)
     }
     legend(x=xlim[1]-(xlim[2]-xlim[1])/10, y=ylim[1]-(ylim[2]-ylim[1])/4.5,
            legend=c(paste("Expert", c(1:6)), "Default Prior"),
-           pch=15, col=cols, bty="n", horiz=TRUE, xpd=NA)
+           pch=19, col=cols, bty="n", horiz=TRUE, xpd=NA)
 
   }
   grDevices::dev.off()
