@@ -52,7 +52,9 @@ plotBFDirectionBosco <- function(BFBosco, elicit.stage){
   ggsave(filename=paste0("plot_BF_DirectionBosco_", elicit.stage,".pdf"),
          plot=p,
          device="pdf",
-         path="../Figures/")
+         path="../Figures/",
+         width = 9.86,
+         height = 7.46)
 }
 
 
@@ -111,7 +113,9 @@ plotBFDirectionWetzels <- function(BFWetzels, elicit.stage, disttype){
   ggsave(filename=paste0("plot_BF_DirectionWetzels_", elicit.stage, "_", disttype, ".pdf"),
          plot=p,
          device="pdf",
-         path="../Figures/")
+         path="../Figures/",
+         width = 9.86,
+         height = 7.46)
 }
 
 #' Function to plot the agreement in evidence strength between Bayes factors for the Bosco data
@@ -168,10 +172,12 @@ plotEvidenceChangeBosco <- function(BFBosco, elicit.stage, threshold){
     scale_y_discrete(position="right") +
     ggtitle("Data: Bosco et al. (2015)")
 
-  ggsave(filename=paste0("plot_EvidenceChange_Bosco_", elicit.stage,".pdf"),
+  ggsave(filename=paste0("plot_EvidenceChange_Bosco_", elicit.stage, threshold, ".pdf"),
          plot=p,
          device="pdf",
-         path="../Figures/")
+         path="../Figures/",
+         width = 9.86,
+         height = 7.46)
 }
 
 #' Function to plot the agreement in evidence strength between Bayes factors for the Wetzels data
@@ -232,10 +238,12 @@ plotEvidenceChangeWetzels <- function(BFWetzels, elicit.stage, threshold, distty
     scale_y_discrete(position="right") +
     ggtitle("Data: Wetzels et al. (2011)")
 
-  ggsave(filename=paste0("plot_EvidenceChange_Wetzels_", elicit.stage, "_", disttype, ".pdf"),
+  ggsave(filename=paste0("plot_EvidenceChange_Wetzels_", elicit.stage, "_", disttype, threshold, ".pdf"),
          plot=p,
          device="pdf",
-         path="../Figures/")
+         path="../Figures/",
+         width = 9.86,
+         height = 7.46)
 }
 
 
