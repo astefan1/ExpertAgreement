@@ -35,6 +35,21 @@ source("data-raw/LoadAllData.R") # this may take 3-5 minutes
 
 ### STEP 2: Data Analysis
 
+Install the required packages:
+
+```
+install.packages("hypergeo")
+install.packages("devtools")
+devtools::install_github("nicebread/BFDA", subdir="package")
+install.packages("logOfGamma")
+install.packages("ggsci")
+install.packages("grDevices")
+install.packages("SuppDists")
+install.packages("ggplot2")
+install.packages("rlang")
+install.packages("readxl")
+```
+
 Follow the steps outlined in the R-script below:
 
 ```
