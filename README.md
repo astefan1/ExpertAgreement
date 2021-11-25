@@ -92,6 +92,10 @@ plotallBFBosco(BFBosco, BFlog=TRUE, x1=60, y1=60, x0=-20, y0=-20)
 # Plot Bayes factors for different correlation coefficients
 plotBFBoscoOneR(BoscoEtAl, BFBosco, ExpertsPriors_cor, elicit.stage = "Shiny")
 
+# Plot Bayes factor ratios
+
+plotBFratiosBosco(BFBosco)
+plotBFratiosWetzels(BFWetzels)
 ```
 
 ### Appendix 

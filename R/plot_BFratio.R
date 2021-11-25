@@ -1,0 +1,160 @@
+
+plotBFratiosWetzels <- function(BFWetzels, alternative="greater", elicit.stage="Shiny", disttype="t"){
+  # Define arguments
+  alternative <- switch(alternative,
+                        "two.sided"="BF10", "greater"="BFplus0", "less"="BFmin0")
+
+  # Select columns from Bayes factor dataset
+  BFselect <- paste0("BF_", elicit.stage, "_", disttype, "_", alternative)
+  BFelicited <- grep(BFselect, colnames(BFWetzels))
+  BFdefault <- grep(paste0(alternative, "_default"), colnames(BFWetzels))
+  colselect <- c(BFelicited, BFdefault)
+
+  path <- paste0("../Figures/BFratiosWetzels_", BFselect, ".pdf")
+  grDevices::pdf(file = path, width = 8.37, height=7.26)
+
+  BFWetzels <- apply(BFWetzels, 2, as.numeric)
+
+  boxBF<- function(col1, col2){
+    BFratio <- BFWetzels[,colselect[col1]]/BFWetzels[,colselect[col2]]
+    boxplot(log(BFratio), pch=21, bg=scales::alpha("grey26", 0.5), ylim = c(-4, 4))
+  }
+
+  # Plot everything
+  par(mfrow=c(6,6), mar=c(1,0,0,1), oma=c(3,3,1,2), xaxt="n", yaxt="n")
+  plot.new()
+  plot.new()
+  plot.new()
+  plot.new()
+  plot.new()
+  boxBF(7, 6)
+  axis(side=2, tick = TRUE, yaxt="s", las=1, at = log(c(1/50, 1/10, 1/3, 1, 3, 10, 50)), labels = c("1/50", "1/10", "1/3", "1", "3", "10", "50"))
+  mtext(side=4, "Expert 6", line=1.5, cex=1.3)
+  plot.new()
+  plot.new()
+  plot.new()
+  plot.new()
+  boxBF(6, 5)
+  axis(side=2, tick = TRUE, yaxt="s", las=1, at = log(c(1/50, 1/10, 1/3, 1, 3, 10, 50)), labels = c("1/50", "1/10", "1/3", "1", "3", "10", "50"))
+  boxBF(7, 5)
+  mtext(side=4, "Expert 5", line=1.5, cex=1.3)
+  plot.new()
+  plot.new()
+  plot.new()
+  boxBF(5, 4)
+  axis(side=2, tick = TRUE, yaxt="s", las=1, at = log(c(1/50, 1/10, 1/3, 1, 3, 10, 50)), labels = c("1/50", "1/10", "1/3", "1", "3", "10", "50"))
+  boxBF(6, 4)
+  boxBF(7, 4)
+  mtext(side=4, "Expert 4", line=1.5, cex=1.3)
+  plot.new()
+  plot.new()
+  boxBF(4, 3)
+  axis(side=2, tick = TRUE, yaxt="s", las=1, at = log(c(1/50, 1/10, 1/3, 1, 3, 10, 50)), labels = c("1/50", "1/10", "1/3", "1", "3", "10", "50"))
+  boxBF(5, 3)
+  boxBF(6, 3)
+  boxBF(7, 3)
+  mtext(side=4, "Expert 3", line=1.5, cex=1.3)
+  plot.new()
+  boxBF(3, 2)
+  axis(side=2, tick = TRUE, yaxt="s", las=1, at = log(c(1/50, 1/10, 1/3, 1, 3, 10, 50)), labels = c("1/50", "1/10", "1/3", "1", "3", "10", "50"))
+  boxBF(4, 2)
+  boxBF(5, 2)
+  boxBF(6, 2)
+  boxBF(7, 2)
+  mtext(side=4, "Expert 2", line=1.5, cex=1.3)
+  boxBF(2, 1)
+  axis(side=2, tick = TRUE, yaxt="s", las=1, at = log(c(1/50, 1/10, 1/3, 1, 3, 10, 50)), labels = c("1/50", "1/10", "1/3", "1", "3", "10", "50"))
+  mtext(side=1, "Expert 2", line=1.5, cex=1.3)
+  boxBF(3, 1)
+  mtext(side=1, "Expert 3", line=1.5, cex=1.3)
+  boxBF(4, 1)
+  mtext(side=1, "Expert 4", line=1.5, cex=1.3)
+  boxBF(5, 1)
+  mtext(side=1, "Expert 5", line=1.5, cex=1.3)
+  boxBF(6, 1)
+  mtext(side=1, "Expert 6", line=1.5, cex=1.3)
+  boxBF(7, 1)
+  mtext(side=4, "Expert 1", line=1.5, cex=1.3)
+  mtext(side=1, "Default", line=1.5, cex=1.3)
+
+  grDevices::dev.off()
+}
+
+plotBFratiosBosco <- function(BFBosco, elicit.stage="Shiny"){
+
+  # Select columns from Bayes factor dataset
+  BFselect <- paste0("BF_", elicit.stage)
+  BFelicited <- grep(BFselect, colnames(BFBosco))
+  BFdefault <- grep("_default", colnames(BFBosco))
+  colselect <- c(BFelicited, BFdefault)
+
+  path <- paste0("../Figures/BFratiosBosco_", BFselect, ".pdf")
+  grDevices::pdf(file = path, width = 8.37, height=7.26)
+
+  BFBosco <- apply(BFBosco, 2, as.numeric)
+
+  boxBF<- function(col1, col2){
+    BFratio <- BFBosco[,colselect[col1]]/BFBosco[,colselect[col2]]
+    boxplot(log(BFratio), pch=21, bg=scales::alpha("grey26", 0.5), ylim = c(-5, 5))
+  }
+
+  # Plot everything
+  par(mfrow=c(6,6), mar=c(1,0,0,1), oma=c(3,3,1,2), xaxt="n", yaxt="n")
+  plot.new()
+  plot.new()
+  plot.new()
+  plot.new()
+  plot.new()
+  boxBF(7, 6)
+  axis(side=2, tick = TRUE, yaxt="s", las=1, at = log(c(1/50, 1/10, 1/3, 1, 3, 10, 50)), labels = c("1/50", "1/10", "1/3", "1", "3", "10", "50"))
+  mtext(side=4, "Expert 6", line=1.5, cex=1.3)
+  plot.new()
+  plot.new()
+  plot.new()
+  plot.new()
+  boxBF(6, 5)
+  axis(side=2, tick = TRUE, yaxt="s", las=1, at = log(c(1/50, 1/10, 1/3, 1, 3, 10, 50)), labels = c("1/50", "1/10", "1/3", "1", "3", "10", "50"))
+  boxBF(7, 5)
+  mtext(side=4, "Expert 5", line=1.5, cex=1.3)
+  plot.new()
+  plot.new()
+  plot.new()
+  boxBF(5, 4)
+  axis(side=2, tick = TRUE, yaxt="s", las=1, at = log(c(1/50, 1/10, 1/3, 1, 3, 10, 50)), labels = c("1/50", "1/10", "1/3", "1", "3", "10", "50"))
+  boxBF(6, 4)
+  boxBF(7, 4)
+  mtext(side=4, "Expert 4", line=1.5, cex=1.3)
+  plot.new()
+  plot.new()
+  boxBF(4, 3)
+  axis(side=2, tick = TRUE, yaxt="s", las=1, at = log(c(1/50, 1/10, 1/3, 1, 3, 10, 50)), labels = c("1/50", "1/10", "1/3", "1", "3", "10", "50"))
+  boxBF(5, 3)
+  boxBF(6, 3)
+  boxBF(7, 3)
+  mtext(side=4, "Expert 3", line=1.5, cex=1.3)
+  plot.new()
+  boxBF(3, 2)
+  axis(side=2, tick = TRUE, yaxt="s", las=1, at = log(c(1/50, 1/10, 1/3, 1, 3, 10, 50)), labels = c("1/50", "1/10", "1/3", "1", "3", "10", "50"))
+  boxBF(4, 2)
+  boxBF(5, 2)
+  boxBF(6, 2)
+  boxBF(7, 2)
+  mtext(side=4, "Expert 2", line=1.5, cex=1.3)
+  boxBF(2, 1)
+  axis(side=2, tick = TRUE, yaxt="s", las=1, at = log(c(1/50, 1/10, 1/3, 1, 3, 10, 50)), labels = c("1/50", "1/10", "1/3", "1", "3", "10", "50"))
+  mtext(side=1, "Expert 2", line=1.5, cex=1.3)
+  boxBF(3, 1)
+  mtext(side=1, "Expert 3", line=1.5, cex=1.3)
+  boxBF(4, 1)
+  mtext(side=1, "Expert 4", line=1.5, cex=1.3)
+  boxBF(5, 1)
+  mtext(side=1, "Expert 5", line=1.5, cex=1.3)
+  boxBF(6, 1)
+  mtext(side=1, "Expert 6", line=1.5, cex=1.3)
+  boxBF(7, 1)
+  mtext(side=4, "Expert 1", line=1.5, cex=1.3)
+  mtext(side=1, "Default", line=1.5, cex=1.3)
+
+  grDevices::dev.off()
+}
+
